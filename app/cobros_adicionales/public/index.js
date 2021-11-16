@@ -39,6 +39,14 @@ $('.select2').select2();
             }
         },
         {
+            data: "es_fijo",
+            className: 'vertical-middle text-center',
+            width: "75px",
+            render: function(d, type, row) {
+                return `<div class=" badge badge-${(d) ? 'success' : 'danger'}">${(d) ? 'Si' : 'No'}</div>`;
+            }
+        },
+        {
             orderable: false,
             className: 'text-center text-truncate vertical-middle',
             width: "100px",
@@ -63,9 +71,6 @@ function RefrescarTabla() {
  */
 $("#btn-nuevo").on('click', function() {
     $(`#modal-nuevo form [name='periodos_id[]'] option`).removeAttr('selected');
-    for(let periodo of PERIODOS_FIJOS) {
-        $(`#modal-nuevo form [name='periodos_id[]'] option[value=${periodo.idPeriodoContable}]`).attr('selected', '');
-    }
     $('.select2').select2();
 
     $("#modal-nuevo").modal('show');
@@ -96,6 +101,18 @@ $("#modal-nuevo form").on('submit', function(e) {
     });
 });
 
+$("#modal-nuevo form").on('reset', () => {
+    $("#nuevo-periodos").collapse('show');
+});
+
+$("#nuevo-cobro-adicional-fijo").on('change', () => {
+    if($("#nuevo-cobro-adicional-fijo").is(':checked')) {
+        $("#nuevo-periodos").collapse('hide');
+    } else {
+        $("#nuevo-periodos").collapse('show');
+    }
+});
+
 /**
  * Modificar
  */
@@ -106,6 +123,14 @@ $("#modal-nuevo form").on('submit', function(e) {
     $("#modal-modificar form [name=empresa]").val( data.empresa.razon_social );
     $("#modal-modificar form [name=descripcion]").val( data.descripcion );
     $("#modal-modificar form [name=monto]").val( data.monto );
+
+    $("#modal-modificar form [name=es_fijo]").prop('checked', data.es_fijo);
+    if(data.es_fijo) {
+        $("#modificar-periodos").removeClass('show');
+    } else {
+        $("#modificar-periodos").addClass('show');
+    }
+    
 
     $(`#modal-modificar form [name='periodos_id[]'] option`).removeAttr('selected');
     for(let periodo_id of data.periodos_id) {
@@ -139,6 +164,18 @@ $("#modal-modificar form").on('submit', function(e) {
             $("#modal-modificar form")[0].reset();
         }
     });
+});
+
+$("#modal-modificar form").on('reset', () => {
+    $("#modificar-periodos").collapse('show');
+});
+
+$("#modificar-cobro-adicional-fijo").on('change', () => {
+    if($("#modificar-cobro-adicional-fijo").is(':checked')) {
+        $("#modificar-periodos").collapse('hide');
+    } else {
+        $("#modificar-periodos").collapse('show');
+    }
 });
 
 /**

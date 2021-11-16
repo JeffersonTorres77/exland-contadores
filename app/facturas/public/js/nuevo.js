@@ -116,7 +116,7 @@ function actualizar_cobros_adicionales() {
     
     if(idPeriodo != "") {
         let periodos = objEmpresa.cobros_adicionales.filter((item) => {
-            return item.periodos.find(i => i == idPeriodo);
+            return item.periodos.find(i => i == idPeriodo) || item.es_fijo == '1';
         });
         
         cobros_adicionales = 0;

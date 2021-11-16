@@ -6,6 +6,7 @@ class CobroAdicionalModel
     public $empresa_id;
     public $descripcion;
     public $monto;
+    public $es_fijo;
     public $created_at;
     public $updated_at;
 
@@ -18,6 +19,7 @@ class CobroAdicionalModel
         $this->empresa_id = $datos[0]['empresa_id'];
         $this->descripcion = $datos[0]['descripcion'];
         $this->monto = $datos[0]['monto'];
+        $this->es_fijo = boolval( $datos[0]['es_fijo'] );
         $this->created_at = $datos[0]['created_at'];
         $this->updated_at = $datos[0]['updated_at'];
     }

@@ -30,6 +30,12 @@ switch($accion)
                 }
             ],
             [
+                'db' => 'es_fijo', 'dt' => 'es_fijo',
+                'formatter' => function($d, $row) {
+                    return boolval($d);
+                }
+            ],
+            [
                 'db' => 'id', 'dt' => 'periodos_id',
                 'formatter' => function($d, $row) {
                     return CobrosAdicionalModel::Periodos($d);
@@ -51,14 +57,15 @@ switch($accion)
         $empresa_id = Input::post('empresa_id', TRUE);
         $descripcion = Input::post('descripcion', TRUE);
         $monto = floatval( Input::post('monto', TRUE) );
-        $periodos_id = Input::post('periodos_id', TRUE);
+        $periodos_id = Input::post('periodos_id', FALSE);
+        $es_fijo = Input::post('es_fijo', FALSE) != NULL;
 
         $objEmpresa = new EmpresaModel( $empresa_id );
         if( empty($descripcion) ) throw new Exception("La descripción no puede estar vacia.");
-        if( count($periodos_id) <= 0 ) throw new Exception("Debe selecionar minimo un periodo contable.");
+        if( $monto < 0 ) throw new Exception("El monto debe ser un valor positivo.");
 
         Conexion::db()->startTransaction();
-        $empresa_id = CobrosAdicionalModel::Registrar($objEmpresa->id, $descripcion, $monto, $periodos_id);
+        $empresa_id = CobrosAdicionalModel::Registrar($objEmpresa->id, $descripcion, $monto, $es_fijo, $periodos_id);
         Conexion::db()->commit();
 
         sendJson([ 'ok' => TRUE ]);
@@ -71,12 +78,11 @@ switch($accion)
         $cobro_adicional_id = Input::post('cobro_adicional_id', TRUE);
         $descripcion = Input::post('descripcion', TRUE);
         $monto = floatval( Input::post('monto', TRUE) );
-        $periodos_id = Input::post('periodos_id', TRUE);
+        $periodos_id = Input::post('periodos_id', FALSE);
 
         $objCobroAdicional = new CobroAdicionalModel( $cobro_adicional_id );
         $objEmpresa = new EmpresaModel( $objCobroAdicional->empresa_id );
         if( empty($descripcion) ) throw new Exception("La descripción no puede estar vacia.");
-        if( count($periodos_id) <= 0 ) throw new Exception("Debe selecionar minimo un periodo contable.");
 
         Conexion::db()->startTransaction();
 
@@ -84,7 +90,10 @@ switch($accion)
             'descripcion' => $descripcion,
             'monto' => $monto,
         ]);
-        $objCobroAdicional->ModificarPeriodos( $periodos_id );
+        
+        if(!$objCobroAdicional->es_fijo) {
+            $objCobroAdicional->ModificarPeriodos( $periodos_id );
+        }
         
         Conexion::db()->commit();
 

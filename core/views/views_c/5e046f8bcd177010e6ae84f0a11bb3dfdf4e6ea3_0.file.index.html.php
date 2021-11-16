@@ -1,4 +1,27 @@
-<div class="p-2 m-2">
+<?php
+/* Smarty version 3.1.40, created on 2021-11-16 12:35:00
+  from 'C:\xampp\htdocs\exland-contadores\app\cobros_adicionales\templates\index.html' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.40',
+  'unifunc' => 'content_61939764132090_98545441',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '5e046f8bcd177010e6ae84f0a11bb3dfdf4e6ea3' => 
+    array (
+      0 => 'C:\\xampp\\htdocs\\exland-contadores\\app\\cobros_adicionales\\templates\\index.html',
+      1 => 1637061538,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_61939764132090_98545441 (Smarty_Internal_Template $_smarty_tpl) {
+?><div class="p-2 m-2">
     <div class="card mb-3">
         <div class="card-header bg-primary text-white">
             <div class="d-flex justify-content-between">
@@ -52,9 +75,18 @@
                             <div>
                                 <select class="form-control select2 w-100" name="empresa_id" required>
                                     <option value="">Seleccione una empresa...</option>
-                                    {foreach from=$empresas item=empresa}
-                                        <option value="{$empresa.idEmpresa}">{$empresa.razon_social}</option>
-                                    {/foreach}
+                                    <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['empresas']->value, 'empresa');
+$_smarty_tpl->tpl_vars['empresa']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['empresa']->value) {
+$_smarty_tpl->tpl_vars['empresa']->do_else = false;
+?>
+                                        <option value="<?php echo $_smarty_tpl->tpl_vars['empresa']->value['idEmpresa'];?>
+"><?php echo $_smarty_tpl->tpl_vars['empresa']->value['razon_social'];?>
+</option>
+                                    <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                                 </select>
                             </div>
                         </div>
@@ -81,9 +113,18 @@
                         <label class="mb-1">Periodos</label>
                         <select class="form-control select2" name="periodos_id[]" multiple>
                             <option value="" disabled>Seleccione un periodo...</option>
-                            {foreach from=$periodos item=periodo}
-                                <option value="{$periodo.idPeriodoContable}">{$periodo.nombre}</option>
-                            {/foreach}
+                            <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['periodos']->value, 'periodo');
+$_smarty_tpl->tpl_vars['periodo']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['periodo']->value) {
+$_smarty_tpl->tpl_vars['periodo']->do_else = false;
+?>
+                                <option value="<?php echo $_smarty_tpl->tpl_vars['periodo']->value['idPeriodoContable'];?>
+"><?php echo $_smarty_tpl->tpl_vars['periodo']->value['nombre'];?>
+</option>
+                            <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         </select>
                     </div>
                 </div>
@@ -141,9 +182,18 @@
                         <label class="mb-1">Periodos</label>
                         <select class="form-control select2" name="periodos_id[]" multiple>
                             <option value="" disabled>Seleccione un periodo...</option>
-                            {foreach from=$periodos item=periodo}
-                                <option value="{$periodo.idPeriodoContable}">{$periodo.nombre}</option>
-                            {/foreach}
+                            <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['periodos']->value, 'periodo');
+$_smarty_tpl->tpl_vars['periodo']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['periodo']->value) {
+$_smarty_tpl->tpl_vars['periodo']->do_else = false;
+?>
+                                <option value="<?php echo $_smarty_tpl->tpl_vars['periodo']->value['idPeriodoContable'];?>
+"><?php echo $_smarty_tpl->tpl_vars['periodo']->value['nombre'];?>
+</option>
+                            <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         </select>
                     </div>
                 </div>
@@ -182,4 +232,5 @@
             </div>
         </form>
     </div>
-</div>
+</div><?php }
+}

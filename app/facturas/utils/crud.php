@@ -164,13 +164,13 @@ function registrar() {
     $fechaVencimiento = $fechaVencimiento;
     $observacion = $observacion;
     $idCentroCosto = $objCentroCosto->id;
-
+    
     // Cobros adicionales
     $cobros_adicionales = [];
     $cobros = CobrosAdicionalModel::Buscar(['empresa_id' => $idEmpresa]);
     foreach($cobros as $key => $cobro) {
         $periodos = CobrosAdicionalModel::Periodos($cobro['id']);
-        if(!in_array($idPeriodoContable, $periodos)) continue;
+        if(!boolval($cobro['es_fijo']) && !in_array($idPeriodoContable, $periodos)) continue;
 
         array_push($cobros_adicionales, [
             'id' => $cobro['id'],

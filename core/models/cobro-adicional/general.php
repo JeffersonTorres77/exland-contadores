@@ -11,20 +11,25 @@ class CobrosAdicionalModel
         return $roles;
     }
 
-    public static function Registrar($empresa_id, $descripcion, $monto, $periodos_id) {
+    public static function Registrar($empresa_id, $descripcion, $monto, $es_fijo, $periodos_id) {
         $id = Conexion::db()->insert('cobros_adicionales', [
             'empresa_id' => $empresa_id,
             'descripcion' => $descripcion,
             'monto' => $monto,
+            'es_fijo' => $es_fijo,
         ]);
         if(!$id) throw new Exception('Ocurrio un error al intentar registrar el cobro adicional.');
 
-        foreach($periodos_id as $periodo_id) {
-            $id_aux = Conexion::db()->insert('cobros_adicionales_periodos', [
-                'cobro_adicional_id' => $id,
-                'periodo_id' => $periodo_id,
-            ]);
-            if(!$id_aux) throw new Exception('Ocurrio un error al intentar registrar los periodos del cobro adicional.');
+        if(!$es_fijo) {
+            if(empty($periodos_id) || count($periodos_id) < 1) throw new Exception('Debe enviar almenos un periodo.');
+
+            foreach($periodos_id as $periodo_id) {
+                $id_aux = Conexion::db()->insert('cobros_adicionales_periodos', [
+                    'cobro_adicional_id' => $id,
+                    'periodo_id' => $periodo_id,
+                ]);
+                if(!$id_aux) throw new Exception('Ocurrio un error al intentar registrar los periodos del cobro adicional.');
+            }
         }
 
         return $id;
